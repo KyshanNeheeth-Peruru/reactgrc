@@ -108,34 +108,14 @@ function App() {
   //   }, 300); // match animation duration
   // };
   
-  const handleCardClick = async (item: any, cardId: string) => {
-    setClickedCardId(cardId);
-  
-    setTimeout(async () => {
-      try {
-        const response = await fetch(
-          `http://3.86.232.151:8000/api/form_details/?form_name=${encodeURIComponent(item.formName)}&date=${encodeURIComponent(item.date)}&country=${encodeURIComponent(item.country)}`
-        );
-        const data = await response.json();
-  
-        if (!data.error) {
-          setSelectedCard(data);
-          setCardDialogOpen(true);
-        } else {
-          console.error("Form details not found:", data.error);
-        }
-      } catch (err) {
-        console.error("Failed to fetch form details:", err);
-      }
-  
-      setClickedCardId(null);
-    }, 300); // match animation time
-  };
+  const handleCardClick = (item: any) => {
+    let pdfFilename = item.formName === "FFIEC031" ? "ffiec031.pdf" : "fry_9c.pdf";
+    const pdfUrl = `/pdfs/${pdfFilename}`;
 
-  
-  
-  
-  
+    window.open(pdfUrl, "_blank");
+};
+
+
   
   const handleCardDialogClose = () => {
     setCardDialogOpen(false);
@@ -295,7 +275,7 @@ function App() {
     <TextField
       {...params}
       size="small"
-      placeholder="Search forms..."
+      placeholder="Smart Assist"
       variant="outlined"
       InputProps={{
         ...params.InputProps,
@@ -461,7 +441,7 @@ function App() {
           backgroundColor: "#f5faff",
         },
       }}
-      onClick={() => handleCardClick(item, cardId)}
+      onClick={() => handleCardClick(item)}
     >
       <Typography variant="h6" fontWeight="bold" color="primary" gutterBottom>
         {item.formName || "N/A"}
@@ -484,8 +464,24 @@ function App() {
 
 )}
 
+{smartSearchResult && (
+  <button
+    onClick={() => setSmartSearchResult(null)} // Clears search results and goes back
+    style={{
+      marginBottom: "10px",
+      padding: "8px 16px",
+      border: "none",
+      backgroundColor: "#007BFF",
+      color: "white",
+      cursor: "pointer",
+      borderRadius: "5px"
+    }}> Back
+  </button>
+)}
+
 
 {smartSearchResult && (
+  
   <Box
     mt={4}
     p={3}
