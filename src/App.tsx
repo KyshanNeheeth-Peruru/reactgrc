@@ -109,7 +109,7 @@ function App() {
   // };
   
   const handleCardClick = (item: any) => {
-    let pdfFilename = item.formName === "FFIEC031" ? "ffiec031.pdf" : "fry_9c.pdf";
+    let pdfFilename = item.formName === "FFIEC031" ? "FFIEC031.pdf" : "FRY_9C.pdf";
     const pdfUrl = `/pdfs/${pdfFilename}`;
 
     window.open(pdfUrl, "_blank");
