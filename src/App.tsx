@@ -145,9 +145,8 @@ function App() {
 
   const frequentlyAskedQueries = [
     "Available-for-sale debt securities",
-    "Federal funds sold and securities purchased under agreements to resell",
-    "Loans and leases held for sale",
-    "Loans and leases held for investment",
+    "Federal funds sold",
+    "Loans and leases",
   ];
 
   // const handleSmartSearch = async () => {
@@ -518,10 +517,6 @@ function App() {
 
             return (
               <Box key={form}>
-                <Typography><strong>Content:</strong> {smartSearchResult.content}</Typography>
-                <Typography><strong>Schedule Name:</strong> {formData["Schedule Name"]}</Typography>
-                <Typography><strong>Schedule Category:</strong> {formData["Schedule Category"]}</Typography>
-                <Typography><strong>Regulatory Code:</strong> {formData["Regulatory Code"]?.join(", ")}</Typography>
 
                 {/* MDRM Table */}
                 <Box mt={2}>
@@ -532,13 +527,13 @@ function App() {
                           Line Item
                         </Box>
                         <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Region
+                          Schedule Name
                         </Box>
                         <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Country
+                          Schedule Category
                         </Box>
                         <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Date
+                          Regulatory Code
                         </Box>
                         <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
                           Similarity Index
@@ -546,40 +541,40 @@ function App() {
                       </Box>
                     </Box>
                     <Box component="tbody">
-                    {(formData["matched values"] || []).map((entry: any, idx: number) =>
-                      entry.mdrm_values.map((mdrm: string, mdrmIdx: number) => (
-                        <Box component="tr" key={`${entry.line}-${mdrmIdx}`}>
-                          <Box
-                            component="td"
-                            sx={{
-                              py: 1,
-                              color: "primary.main",
-                              cursor: "pointer",
-                              textDecoration: "underline",
-                              "&:hover": { color: "secondary.main" },
-                            }}
-                            onClick={(e) => handleLineItemClick(e, entry.mdrm_values)}
-                          >
-                            {entry.line}
-                          </Box>
+  {formData.map((entry: any, idx: number) => (
+    <Box component="tr" key={`${entry.line}-${idx}`}>
+      <Box
+        component="td"
+        sx={{
+          py: 1,
+          color: "primary.main",
+          cursor: "pointer",
+          textDecoration: "underline",
+          "&:hover": { color: "secondary.main" },
+        }}
+        onClick={(e) => handleLineItemClick(e, entry.mdrm_values)}
+      >
+        {entry.line}
+      </Box>
 
-                          <Box component="td" sx={{ py: 1 }}>
-                            {entry.region}
-                          </Box>
-                          <Box component="td" sx={{ py: 1 }}>
-                            {entry.country}
-                          </Box>
-                          <Box component="td" sx={{ py: 1 }}>
-                            {entry.date}
-                          </Box>
-                          <Box component="td" sx={{ py: 1 }}>
-                            {entry.similarity_index}
-                          </Box>
-                        </Box>
-                      ))
-                    )}
+      <Box component="td" sx={{ py: 1 }}>
+        {entry["Schedule Name"]}
+      </Box>
+      <Box component="td" sx={{ py: 1 }}>
+        {entry["Schedule Category"]}
+      </Box>
+      <Box component="td" sx={{ py: 1 }}>
+        {Array.isArray(entry["Regulatory Code"])
+          ? entry["Regulatory Code"].join(", ")
+          : entry["Regulatory Code"]}
+      </Box>
+      <Box component="td" sx={{ py: 1 }}>
+        {entry.similarity_index}
+      </Box>
+    </Box>
+  ))}
+</Box>
 
-                    </Box>
                   </Box>
                 </Box>
               </Box>
