@@ -278,19 +278,18 @@ function App() {
       variant="outlined"
       InputProps={{
         ...params.InputProps,
-        endAdornment: <Search sx={{ color: "#888" }} />,
+        startAdornment: <Search sx={{ color: "#888", mr: 1 }} />,
       }}
       sx={{
         backgroundColor: "white",
         borderRadius: "8px",
         minWidth: 400,
-        "& .MuiOutlinedInput-root": {
-          borderRadius: "8px",
-        },
+        "& .MuiOutlinedInput-root": { borderRadius: "8px" },
       }}
     />
   )}
 />
+
 
 
     <IconButton 
@@ -417,41 +416,43 @@ function App() {
 
   return (
     <Box
-      key={cardId}
-      p={3}
-      minWidth={240}
-      height={220}
-      flexShrink={0}
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      bgcolor="#ffffff"
-      boxShadow={2}
-      borderRadius={3}
-      border="1px solid #e0e0e0"
-      sx={{
-        cursor: "pointer",
-        transform: clickedCardId === cardId ? "scale(1.05)" : "scale(1)",
-        opacity: clickedCardId === cardId ? 0.6 : 1,
-        transition: "transform 0.3s ease, opacity 0.3s ease",
-        "&:hover": {
-          boxShadow: 6,
-          backgroundColor: "#f5faff",
-        },
-      }}
-      onClick={() => handleCardClick(item)}
-    >
-      <Typography variant="h6" fontWeight="bold" color="primary" gutterBottom>
-        {item.formName || "N/A"}
-      </Typography>
-      <Typography variant="subtitle1" color="textSecondary">
-        {item.date || "N/A"}
-      </Typography>
-      <Typography variant="subtitle2" color="textSecondary">
-        {item.country || "N/A"}
-      </Typography>
-    </Box>
+  key={cardId}
+  p={3}
+  minWidth={240}
+  height={220}
+  flexShrink={0}
+  display="flex"
+  flexDirection="column"
+  justifyContent="center"
+  alignItems="center"
+  bgcolor="#ffffff"
+  boxShadow={2}
+  borderRadius={3}
+  border="1px solid #e0e0e0"
+  sx={{
+    cursor: "pointer",
+    transform: clickedCardId === cardId ? "scale(1.05)" : "scale(1)",
+    opacity: clickedCardId === cardId ? 0.6 : 1,
+    transition: "transform 0.3s ease, opacity 0.3s ease",
+    "&:hover": {
+      boxShadow: 6,
+      backgroundColor: "#f5faff",
+      transform: "scale(1.08)",
+    },
+  }}
+  onClick={() => handleCardClick(item)}
+>
+  <Typography variant="h6" fontWeight="bold" color="primary" gutterBottom>
+    {item.formName || "N/A"}
+  </Typography>
+  <Typography variant="subtitle1" color="textSecondary" display="flex" alignItems="center">
+    📅 {item.date || "N/A"}
+  </Typography>
+  <Typography variant="subtitle2" color="textSecondary" display="flex" alignItems="center">
+    🌍 {item.country || "N/A"}
+  </Typography>
+</Box>
+
   );
 })}
 
@@ -521,61 +522,39 @@ function App() {
                 {/* MDRM Table */}
                 <Box mt={2}>
                   <Box component="table" width="100%" sx={{ borderCollapse: "collapse" }}>
-                    <Box component="thead">
-                      <Box component="tr">
-                        <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Line Item
-                        </Box>
-                        <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Schedule Name
-                        </Box>
-                        <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Schedule Category
-                        </Box>
-                        <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Regulatory Code
-                        </Box>
-                        <Box component="th" sx={{ borderBottom: "2px solid #ccc", textAlign: "left", py: 1 }}>
-                          Similarity Index
-                        </Box>
-                      </Box>
-                    </Box>
-                    <Box component="tbody">
-  {formData.map((entry: any, idx: number) => (
-    <Box component="tr" key={`${entry.line}-${idx}`}>
-      <Box
-        component="td"
-        sx={{
-          py: 1,
-          color: "primary.main",
-          cursor: "pointer",
-          textDecoration: "underline",
-          "&:hover": { color: "secondary.main" },
-        }}
-        onClick={(e) => handleLineItemClick(e, entry.mdrm_values)}
-      >
-        {entry.line}
-      </Box>
-
-      <Box component="td" sx={{ py: 1 }}>
-        {entry["Schedule Name"]}
-      </Box>
-      <Box component="td" sx={{ py: 1 }}>
-        {entry["Schedule Category"]}
-      </Box>
-      <Box component="td" sx={{ py: 1 }}>
-        {Array.isArray(entry["Regulatory Code"])
-          ? entry["Regulatory Code"].join(", ")
-          : entry["Regulatory Code"]}
-      </Box>
-      <Box component="td" sx={{ py: 1 }}>
-        {entry.similarity_index}
-      </Box>
+  <Box component="thead">
+    <Box component="tr" sx={{ backgroundColor: "#f0f0f0" }}>
+      <Box component="th" sx={{ textAlign: "left", py: 1, px: 2 }}>Line Item</Box>
+      <Box component="th" sx={{ textAlign: "left", py: 1, px: 2 }}>Schedule Name</Box>
+      <Box component="th" sx={{ textAlign: "left", py: 1, px: 2 }}>Schedule Category</Box>
+      <Box component="th" sx={{ textAlign: "left", py: 1, px: 2 }}>Regulatory Code</Box>
+      <Box component="th" sx={{ textAlign: "left", py: 1, px: 2 }}>Similarity Index</Box>
     </Box>
-  ))}
+  </Box>
+  <Box component="tbody">
+    {formData.map((entry: any, idx: number) => (
+      <Box component="tr" key={`${entry.line}-${idx}`} sx={{ "&:hover": { backgroundColor: "#f9f9f9" } }}>
+        <Box
+          component="td"
+          sx={{
+            py: 1, px: 2, color: "primary.main", cursor: "pointer",
+            textDecoration: "underline", "&:hover": { color: "secondary.main" }
+          }}
+          onClick={(e) => handleLineItemClick(e, entry.mdrm_values)}
+        >
+          {entry.line}
+        </Box>
+        <Box component="td" sx={{ py: 1, px: 2 }}>{entry["Schedule Name"]}</Box>
+        <Box component="td" sx={{ py: 1, px: 2 }}>{entry["Schedule Category"]}</Box>
+        <Box component="td" sx={{ py: 1, px: 2 }}>
+          {Array.isArray(entry["Regulatory Code"]) ? entry["Regulatory Code"].join(", ") : entry["Regulatory Code"]}
+        </Box>
+        <Box component="td" sx={{ py: 1, px: 2 }}>{entry.similarity_index}</Box>
+      </Box>
+    ))}
+  </Box>
 </Box>
 
-                  </Box>
                 </Box>
               </Box>
             );
