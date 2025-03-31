@@ -33,29 +33,33 @@ function App() {
   const [regionDialogOpen, setRegionDialogOpen] = useState(false);
   const [mdrmPopoverAnchorEl, setMdrmPopoverAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedMdrms, setSelectedMdrms] = useState<string[]>([]);
+  const [searchedQuery, setSearchedQuery] = useState("");
+
+
 
 
 
   const regionsList = ["NAM", "LATAM", "EMEA", "APAC"];
   const formdata = [
-    { id: "01", formName: "FFIEC031", region: "NAM", country: "USA", date: "12 Feb 2020" },
-    { id: "02", formName: "FRY9C", region: "NAM", country: "CANADA", date: "12 Feb 2021" },
-    { id: "03", formName: "FFIEC031", region: "NAM", country: "USA", date: "12 Feb 2022" },
-    { id: "04", formName: "FRY9C", region: "NAM", country: "CANADA", date: "12 Feb 2023" },
-    { id: "05", formName: "FFIEC031", region: "NAM", country: "USA", date: "12 Feb 2024" },
+    { id: "01", formName: "FFIEC031", region: "NAM", country: "USA", date: "12 Feb 2024" },
+    { id: "02", formName: "FRY9C", region: "NAM", country: "USA", date: "12 Feb 2024" },
+    { id: "03", formName: "FFIEC031", region: "NAM", country: "USA", date: "12 Feb 2023" },
+    { id: "04", formName: "FRY9C", region: "NAM", country: "USA", date: "12 Feb 2023" },
+    { id: "05", formName: "BCAR", region: "NAM", country: "Canada", date: "12 Feb 2024" },
+    { id: "06", formName: "M4", region: "NAM", country: "Canada", date: "12 Feb 2024" },
   
-    { id: "06", formName: "FRY9C", region: "LATAM", country: "BRAZIL", date: "12 Feb 2020" },
-    { id: "07", formName: "FFIEC031", region: "LATAM", country: "MEXICO", date: "12 Feb 2021" },
+    { id: "07", formName: "COSIF", region: "LATAM", country: "BRAZIL", date: "12 Feb 2024" },
+    { id: "08", formName: "CUB", region: "LATAM", country: "MEXICO", date: "12 Feb 2024" },
   
-    { id: "08", formName: "FRY9C", region: "EMEA", country: "UK", date: "12 Feb 2022" },
-    { id: "09", formName: "FFIEC031", region: "EMEA", country: "FRANCE", date: "12 Feb 2023" },
+    { id: "09", formName: "FSA001", region: "EMEA", country: "UK", date: "12 Feb 2024" },
+    { id: "10", formName: "FSA002", region: "EMEA", country: "UK", date: "12 Feb 2024" },
+    { id: "11", formName: "FINREP", region: "EMEA", country: "FRANCE", date: "12 Feb 2024" },
   
-    { id: "10", formName: "FRY9C", region: "APAC", country: "INDIA", date: "12 Feb 2020" },
-    { id: "11", formName: "FFIEC031", region: "APAC", country: "AUSTRALIA", date: "12 Feb 2021" },
-    { id: "12", formName: "FRY9C", region: "APAC", country: "AUSTRALIA", date: "12 Feb 2022" },
-    { id: "13", formName: "FFIEC031", region: "APAC", country: "AUSTRALIA", date: "12 Feb 2023" },
-    { id: "14", formName: "FRY9C", region: "APAC", country: "AUSTRALIA", date: "12 Feb 2024" },
-    { id: "15", formName: "FFIEC031", region: "APAC", country: "AUSTRALIA", date: "12 Feb 2025" },
+    { id: "12", formName: "FORM A (BSR-1)", region: "APAC", country: "INDIA", date: "12 Feb 2024" },
+    { id: "13", formName: "FORM B (BSR-2)", region: "APAC", country: "INDIA", date: "12 Feb 2024" },
+    { id: "14", formName: "ARS110", region: "APAC", country: "AUSTRALIA", date: "12 Feb 2024" },
+    { id: "15", formName: "ARS210", region: "APAC", country: "AUSTRALIA", date: "12 Feb 2024" },
+
   ];
   
   const [results, setResults] = useState<any[]>(formdata);
@@ -144,7 +148,7 @@ function App() {
   
 
   const frequentlyAskedQueries = [
-    "Available-for-sale debt securities",
+    "Available-for-sale debt securities and equity securities",
     "Federal funds sold",
     "Loans and leases",
   ];
@@ -207,6 +211,8 @@ function App() {
 
   const handleSmartSearch = async () => {
     if (!query.trim()) return;
+    setSearchedQuery(query);
+    setQuery("");
   
     try {
       const response = await fetch(`http://3.86.232.151:8000/api/search/?query=${encodeURIComponent(query)}`);
@@ -345,7 +351,7 @@ function App() {
       </Box>
 
       <Typography variant="subtitle1" gutterBottom>
-        Frequently searched countries
+        Countries:
       </Typography>
       <Box display="flex" flexWrap="wrap" gap={2} justifyContent="center">
       {frequentlySearchedCountries.map((country) => (
@@ -366,7 +372,10 @@ function App() {
     </DialogContent>
 
     <DialogActions>
-      <Button onClick={() => setRegionDialogOpen(false)} color="primary">Done</Button>
+      <Button onClick={() => {
+      setRegionDialogOpen(false);
+      setSmartSearchResult(null);
+    }} color="primary">Done</Button>
     </DialogActions>
       </Dialog>
 
@@ -466,7 +475,7 @@ function App() {
 
 {smartSearchResult && (
   <button
-    onClick={() => setSmartSearchResult(null)} // Clears search results and goes back
+    onClick={() => setSmartSearchResult(null)}
     style={{
       marginBottom: "10px",
       padding: "8px 16px",
@@ -489,7 +498,10 @@ function App() {
     bgcolor="white"
     boxShadow={2}
   >
-    <Typography variant="h6" fontWeight="bold" mb={2}>Search Result</Typography>
+    <Typography variant="h6" fontWeight="bold" mb={1}>
+  Search results for <span style={{ fontStyle: "italic" }}>"{searchedQuery}"</span>:
+</Typography>
+
 
     {/* Get available form names dynamically */}
     {(() => {
