@@ -11,6 +11,7 @@ import latamIcon from "./assets/ltma.png";
 import emeaIcon from "./assets/emea.png";
 import apacIcon from "./assets/apac.jpg";
 import { Search } from "@mui/icons-material";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 
 
 function App() {
@@ -148,9 +149,9 @@ function App() {
   
 
   const frequentlyAskedQueries = [
-    "Available-for-sale debt securities and equity securities",
-    "Federal funds sold",
     "Loans and leases",
+    "Federal funds sold",
+    "Available-for-sale debt securities and equity securities",
   ];
 
   // const handleSmartSearch = async () => {
@@ -509,7 +510,7 @@ function App() {
       return (
         <>
           {/* Tabs for FFIEC031, FRY9C, etc. */}
-<Tabs
+          <Tabs
   value={formTabIndex}
   onChange={(e, newVal) => setFormTabIndex(newVal)}
   variant="scrollable"
@@ -517,9 +518,30 @@ function App() {
   sx={{ mb: 2 }}
 >
   {Object.keys(smartSearchResult.metadata || {}).map((formName, idx) => (
-    <Tab key={idx} label={formName} />
+    <Tab
+      key={idx}
+      label={
+        <Box display="flex" alignItems="center" gap={1}>
+          {formName}
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation(); // prevent tab switch on click
+              const pdfFilename = formName.includes("FFIEC031")
+                ? "FFIEC031.pdf"
+                : "FRY_9C.pdf";
+              const pdfUrl = `/pdfs/${pdfFilename}`;
+              window.open(pdfUrl, "_blank");
+            }}
+          >
+            <PictureAsPdfIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      }
+    />
   ))}
 </Tabs>
+
 
 
           {/* Tab content for selected form */}
