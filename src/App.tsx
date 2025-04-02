@@ -81,7 +81,7 @@ function App() {
 
   const handleMdrmClick = async (mdrm: string) => {
     try {
-      const response = await fetch(`http://3.86.232.151:8000/api/search_rules/?value=${encodeURIComponent(mdrm)}`);
+      const response = await fetch(`http://44.210.127.214:8000/api/search_rules/?value=${encodeURIComponent(mdrm)}`);
       const data = await response.json();
   
       if (data.results && data.results.length > 0) {
@@ -158,7 +158,7 @@ function App() {
   //   if (!query.trim()) return;
   
   //   try {
-  //     const response = await fetch(`http://3.86.232.151:8000/api/search/?query=${encodeURIComponent(query)}`);
+  //     const response = await fetch(`http://44.210.127.214:8000/api/search/?query=${encodeURIComponent(query)}`);
   //     const data = await response.json();
   
   //     if (data && !data.error) {
@@ -186,7 +186,7 @@ function App() {
   //   setLoading(true);
 
   //   try {
-  //     const response = await fetch(`http://3.86.232.151:8000/api/search/?query=${query}`);
+  //     const response = await fetch(`http://44.210.127.214:8000/api/search/?query=${query}`);
   //     const data = await response.json();
 
   //     if (data.results && data.results.length > 0) {
@@ -216,7 +216,7 @@ function App() {
     setQuery("");
   
     try {
-      const response = await fetch(`http://3.86.232.151:8000/api/search/?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://44.210.127.214:8000/api/search/?query=${encodeURIComponent(query)}`);
       const data = await response.json();
   
       if (data.results && data.results.length > 0) {
@@ -234,7 +234,7 @@ function App() {
 
   const fetchRuleData = async (value: string) => {
     try {
-      const response = await fetch(`http://3.86.232.151:8000/api/search_rules/?value=${value}`);
+      const response = await fetch(`http://44.210.127.214:8000/api/search_rules/?value=${value}`);
       const data = await response.json();
       if (data.results && data.results.length > 0) {
         setRuleData(data.results[0]); // Assuming one match per value
