@@ -154,81 +154,28 @@ function App() {
     "Available-for-sale debt securities and equity securities",
   ];
 
-  // const handleSmartSearch = async () => {
-  //   if (!query.trim()) return;
+  const handleSmartSearch = async (searchTerm?: string) => {
+    const searchQuery = searchTerm ?? query;
+    if (!searchQuery.trim()) return;
   
-  //   try {
-  //     const response = await fetch(`http://44.210.127.214:8000/api/search/?query=${encodeURIComponent(query)}`);
-  //     const data = await response.json();
-  
-  //     if (data && !data.error) {
-  //       setSmartSearchResult(data.results[0]);
-  //       setSmartDialogOpen(true);
-  //       setSmartAssistQuery(""); // optional
-  //     } else {
-  //       console.error("No matching record found or error:", data.error);
-  //     }
-  //   } catch (err) {
-  //     console.error("Smart search request failed:", err);
-  //   }
-  // };
-  
-  
-
-  // const handleSearch = async () => {
-  //   if (!query.trim()) {
-  //     setError(true);
-  //     setShowResults(false);
-  //     return;
-  //   }
-
-  //   setError(false);
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await fetch(`http://44.210.127.214:8000/api/search/?query=${query}`);
-  //     const data = await response.json();
-
-  //     if (data.results && data.results.length > 0) {
-  //       setResults(data.results);
-  //       setShowResults(true);
-
-  //       const initialSelectedValues: { [key: number]: string } = {};
-  //       data.results.forEach((item: any, index: number) => {
-  //         initialSelectedValues[index] = item.metadata.value?.[0] || "";
-  //       });
-  //       setSelectedValues(initialSelectedValues);
-  //     } else {
-  //       setResults([]);
-  //       setShowResults(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //     setShowResults(false);
-  //   }
-
-  //   setLoading(false);
-  // };
-
-  const handleSmartSearch = async () => {
-    if (!query.trim()) return;
-    setSearchedQuery(query);
-    setQuery("");
+    setSearchedQuery(searchQuery);
+    setQuery(searchQuery);
   
     try {
-      const response = await fetch(`http://44.210.127.214:8000/api/search/?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://44.210.127.214:8000/api/search/?query=${encodeURIComponent(searchQuery)}`);
       const data = await response.json();
   
       if (data.results && data.results.length > 0) {
-        setSmartSearchResult(data.results[0]);  // Store in state
-        setSelectedCard(null);                  // Optional: Clear card state if needed
-        setSmartAssistQuery("");                // Reset smart assist filter
+        setSmartSearchResult(data.results[0]);
+        setSelectedCard(null);
+        setSmartAssistQuery("");
       } else {
         setSmartSearchResult(null);
       }
     } catch (err) {
       console.error("Search request failed:", err);
     }
+    setQuery("");
   };
   
 
@@ -272,6 +219,13 @@ function App() {
   options={frequentlyAskedQueries}
   inputValue={query}
   onInputChange={(event, newInputValue) => setQuery(newInputValue)}
+
+  onChange={(event, newValue) => {
+    if (newValue) {
+      handleSmartSearch(newValue);
+    }
+  }}
+
   onKeyDown={(e) => {
     if (e.key === "Enter") {
       handleSmartSearch();
@@ -319,7 +273,17 @@ function App() {
 
 
       {/* Region Selection Dialog */}
-      <Dialog open={regionDialogOpen} onClose={() => setRegionDialogOpen(false)}>
+      <Dialog open={regionDialogOpen} onClose={() => setRegionDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            top: '-30% !important',
+            left: '20% !important',
+            transform: 'translate(-50%, 0) !important',
+            width: '700px',
+            maxHeight: '80vh',
+            height: '250px',
+          }
+        }}>
         <DialogTitle>Select Regions</DialogTitle>
 
     <DialogContent>
