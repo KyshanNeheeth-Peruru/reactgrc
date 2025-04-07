@@ -207,15 +207,23 @@ function App() {
   };
 
   return (
-    <Container maxWidth={false} sx={{ width: "100%", px: 2 }}>
-      <Box display="flex" alignItems="center" gap={2} width="100%" 
-      py={1} sx={{ backgroundColor: "#f8f9fa" }}></Box>
+    <Container maxWidth={false} sx={{ width: "100%", px: 2 , minHeight: "100vh", background: "linear-gradient(to right,rgb(202, 136, 12),rgb(21, 90, 186))"}}>
+      {/* <Box display="flex" alignItems="center" gap={2} width="100%" 
+      py={1} sx={{ backgroundColor: "#f8f9fa" }}></Box> */}
 
-<Box display="flex" alignItems="center" justifyContent="space-between" py={2} sx={{ backgroundColor: "#f8f9fa", px: 3 }}>
-  <img src={logo} alt="Company Logo" style={{ height: 40 }} />
+<Box
+  display="flex"
+  flexDirection="column"
+  alignItems="center"
+  py={4}
+  width="100%"
+  sx={{ backgroundColor: "rgba(255, 255, 255, 0.06)", borderRadius: "12px",  px: 3 }}
+>
+  {/* Logo at top center */}
+  <img src={logo} alt="Company Logo" style={{ height: 40, marginBottom: 20 }} />
 
-  {/* Centered Search Box */}
-  <Box display="flex" alignItems="center" flex={1} justifyContent="center">
+  {/* Search and region icon aligned horizontally */}
+  <Box display="flex" alignItems="center" justifyContent="center">
     <Box mr={2}>
       <Autocomplete
         freeSolo
@@ -370,7 +378,7 @@ function App() {
   mt={3}
   p={3}
   borderRadius={2}
-  bgcolor="white"
+  bgcolor= "#f0f4f8" 
   boxShadow={2}
   sx={{ mb: 5, maxHeight: "80vh", overflowY: "auto" }}
 >
@@ -842,7 +850,11 @@ function App() {
         </Typography>
       )}
       {tabIndex === 1 && (
+        
         <Typography>
+          For lineage graph, click{" "}
+          <a href="http://44.210.127.214:8000/lineage/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "underline", cursor: "pointer" }}>here</a>.
+          <br/>
           <strong>Lineage:</strong><br />
           <code style={{ whiteSpace: "pre-wrap" }}>
           {ruleData?.metadata?.SQL || "No lineage data available"}
