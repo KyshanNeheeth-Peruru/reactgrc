@@ -12,6 +12,7 @@ import emeaIcon from "./assets/emea.png";
 import apacIcon from "./assets/apac.jpg";
 import { Search } from "@mui/icons-material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import CloseIcon from "@mui/icons-material/Close";
 
 
 function App() {
@@ -213,53 +214,53 @@ function App() {
 <Box display="flex" alignItems="center" justifyContent="space-between" py={2} sx={{ backgroundColor: "#f8f9fa", px: 3 }}>
   <img src={logo} alt="Company Logo" style={{ height: 40 }} />
 
-  <Box display="flex" alignItems="center" gap={2}>
-  <Autocomplete
-  freeSolo
-  options={frequentlyAskedQueries}
-  inputValue={query}
-  onInputChange={(event, newInputValue) => setQuery(newInputValue)}
+  {/* Centered Search Box */}
+  <Box display="flex" alignItems="center" flex={1} justifyContent="center">
+    <Box mr={2}>
+      <Autocomplete
+        freeSolo
+        options={frequentlyAskedQueries}
+        inputValue={query}
+        onInputChange={(event, newInputValue) => setQuery(newInputValue)}
+        onChange={(event, newValue) => {
+          if (newValue) {
+            handleSmartSearch(newValue);
+          }
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSmartSearch();
+          }
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            size="small"
+            placeholder="Smart Assist"
+            variant="outlined"
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: <Search sx={{ color: "#888", mr: 1 }} />,
+            }}
+            sx={{
+              backgroundColor: "white",
+              borderRadius: "8px",
+              minWidth: 400,
+              "& .MuiOutlinedInput-root": { borderRadius: "8px" },
+            }}
+          />
+        )}
+      />
+    </Box>
 
-  onChange={(event, newValue) => {
-    if (newValue) {
-      handleSmartSearch(newValue);
-    }
-  }}
-
-  onKeyDown={(e) => {
-    if (e.key === "Enter") {
-      handleSmartSearch();
-    }
-  }}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      size="small"
-      placeholder="Smart Assist"
-      variant="outlined"
-      InputProps={{
-        ...params.InputProps,
-        startAdornment: <Search sx={{ color: "#888", mr: 1 }} />,
-      }}
-      sx={{
-        backgroundColor: "white",
-        borderRadius: "8px",
-        minWidth: 400,
-        "& .MuiOutlinedInput-root": { borderRadius: "8px" },
-      }}
-    />
-  )}
-/>
-
-
-
-    <IconButton 
+    <IconButton
       color="secondary"
       sx={{
         backgroundColor: "#f0f0f0",
         borderRadius: "8px",
         "&:hover": { backgroundColor: "#e0e0e0" },
-        width: "50px", height: "50px"
+        width: "50px",
+        height: "50px",
       }}
       onClick={() => setRegionDialogOpen(true)}
     >
@@ -269,27 +270,40 @@ function App() {
 </Box>
 
 
+
     <Divider sx={{ mb: 3 }} />
 
 
       {/* Region Selection Dialog */}
       <Dialog open={regionDialogOpen} onClose={() => setRegionDialogOpen(false)}
-        PaperProps={{
-          sx: {
-            top: '-30% !important',
-            left: '20% !important',
-            transform: 'translate(-50%, 0) !important',
-            width: '700px',
-            maxHeight: '80vh',
-            height: '250px',
-          }
-        }}>
-        <DialogTitle>Select Regions</DialogTitle>
+        // PaperProps={{
+        //   sx: {
+        //     top: '-30% !important',
+        //     left: '20% !important',
+        //     transform: 'translate(-50%, 0) !important',
+        //     width: '700px',
+        //     maxHeight: '80vh',
+        //     height: '250px',
+        //   }
+        // }}
+        >
+        <DialogTitle
+    sx={{ m: 0, p: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}
+    id="draggable-dialog-title"
+  >
+    <Typography variant="h6">Select Regions:</Typography>
+    <IconButton
+      aria-label="close"
+      onClick={() => setRegionDialogOpen(false)}
+      sx={{
+        color: (theme) => theme.palette.grey[500],
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+  </DialogTitle>
 
     <DialogContent>
-      <Typography variant="subtitle1" gutterBottom>
-        Region
-      </Typography>
       <Box display="flex" flexWrap="wrap" gap={3} justifyContent="center" mb={3}>
       {regionsList.map((region) => (
         <Box
@@ -318,22 +332,26 @@ function App() {
       <Typography variant="subtitle1" gutterBottom>
         Countries:
       </Typography>
-      <Box display="flex" flexWrap="wrap" gap={2} justifyContent="center">
-      {frequentlySearchedCountries.map((country) => (
-        <Box
-          key={country}
-          sx={{
-            border: "1px solid #ccc",
-            borderRadius: "12px",
-            padding: "8px 16px",
-            backgroundColor: "#f9f9f9",
-            fontWeight: "bold",
-          }}
-        >
-          {country}
-        </Box>
-      ))}
-      </Box>
+      <Box display="flex" flexWrap="wrap" gap={1} justifyContent="center">
+  {frequentlySearchedCountries.map((country) => (
+    <Box
+      key={country}
+      sx={{
+        border: "1px solid #e0e0e0",
+        borderRadius: "10px",
+        padding: "4px 10px",
+        fontSize: "0.8rem",
+        backgroundColor: "#fafafa",
+        fontWeight: "normal",
+        cursor: "default",
+        color: "#555",
+      }}
+    >
+      {country}
+    </Box>
+  ))}
+</Box>
+
     </DialogContent>
 
     <DialogActions>
@@ -362,14 +380,14 @@ function App() {
     );
 
     return (
-      <Box key={region} mb={4}>
+      <Box key={region} mb={-1}>
       <Typography variant="h6" fontWeight="bold" mb={2}>
         {region}
       </Typography>
     
       <Box
         display="flex"
-        gap={2}
+        gap={1}
         overflow="auto"
         sx={{
           whiteSpace: "nowrap",
@@ -392,8 +410,8 @@ function App() {
     <Box
   key={cardId}
   p={3}
-  minWidth={240}
-  height={220}
+  minWidth={140}
+  height={80}
   flexShrink={0}
   display="flex"
   flexDirection="column"
@@ -416,13 +434,13 @@ function App() {
   }}
   onClick={() => handleCardClick(item)}
 >
-  <Typography variant="h6" fontWeight="bold" color="primary" gutterBottom>
+  <Typography variant="body2" fontWeight="bold" color="primary" gutterBottom>
     {item.formName || "N/A"}
   </Typography>
-  <Typography variant="subtitle1" color="textSecondary" display="flex" alignItems="center">
+  <Typography variant="caption" color="textSecondary" display="flex" alignItems="center">
     📅 {item.date || "N/A"}
   </Typography>
-  <Typography variant="subtitle2" color="textSecondary" display="flex" alignItems="center">
+  <Typography variant="caption" color="textSecondary" display="flex" alignItems="center">
     🌍 {item.country || "N/A"}
   </Typography>
 </Box>
