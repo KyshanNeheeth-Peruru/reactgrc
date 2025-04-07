@@ -207,7 +207,7 @@ function App() {
   };
 
   return (
-    <Container maxWidth={false} sx={{ width: "100%", px: 2 , minHeight: "100vh", background: "linear-gradient(to right,rgb(202, 136, 12),rgb(21, 90, 186))"}}>
+    <Container maxWidth={false} sx={{ width: "100%", px: 2 , minHeight: "100vh", background: "linear-gradient(to right,rgb(21, 90, 186),rgb(230, 209, 29))"}}>
       {/* <Box display="flex" alignItems="center" gap={2} width="100%" 
       py={1} sx={{ backgroundColor: "#f8f9fa" }}></Box> */}
 
