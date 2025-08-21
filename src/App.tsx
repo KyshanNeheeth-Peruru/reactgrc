@@ -82,7 +82,7 @@ function App() {
 
   const handleMdrmClick = async (mdrm: string) => {
     try {
-      const response = await fetch(`http://44.201.233.13:8000/api/search_rules/?value=${encodeURIComponent(mdrm)}`);
+      const response = await fetch(`http://18.212.35.176:8000/api/search_rules/?value=${encodeURIComponent(mdrm)}`);
       const data = await response.json();
   
       if (data.results && data.results.length > 0) {
@@ -163,7 +163,7 @@ function App() {
     setQuery(searchQuery);
   
     try {
-      const response = await fetch(`http://44.201.233.13:8000/api/search/?query=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`http://18.212.35.176:8000/api/search/?query=${encodeURIComponent(searchQuery)}`);
       const data = await response.json();
   
       if (data.results && data.results.length > 0) {
@@ -182,7 +182,7 @@ function App() {
 
   const fetchRuleData = async (value: string) => {
     try {
-      const response = await fetch(`http://44.201.233.13:8000/api/search_rules/?value=${value}`);
+      const response = await fetch(`http://18.212.35.176:8000/api/search_rules/?value=${value}`);
       const data = await response.json();
       if (data.results && data.results.length > 0) {
         setRuleData(data.results[0]); // Assuming one match per value
@@ -853,7 +853,7 @@ function App() {
         
         <Typography>
           For lineage graph, click{" "}
-          <a href="http://44.201.233.13:8000/lineage/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "underline", cursor: "pointer" }}>here</a>.
+          <a href="http://18.212.35.176:8000/lineage/" target="_blank" rel="noopener noreferrer" style={{ color: "#1976d2", textDecoration: "underline", cursor: "pointer" }}>here</a>.
           <br/>
           <strong>Lineage:</strong><br />
           <code style={{ whiteSpace: "pre-wrap" }}>
